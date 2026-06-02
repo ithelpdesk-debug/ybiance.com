@@ -377,23 +377,75 @@ footer {
 .delay-4 { animation-delay: 0.5s; }
 .delay-5 { animation-delay: 0.65s; }
 
+/* ── CONTACT FORM ── */
+.contact-section { background: var(--off-white); }
+.contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+.contact-info { padding-top: 8px; }
+.contact-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 28px; }
+.contact-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--green-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-icon svg { width: 18px; height: 18px; stroke: var(--green-700); }
+.contact-detail-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green-600); margin-bottom: 4px; }
+.contact-detail-value { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
+.contact-form { background: var(--white); border-radius: 16px; padding: 40px; border: 1px solid var(--border); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-label { font-size: 12px; font-weight: 500; color: var(--ink-mid); letter-spacing: 0.3px; }
+.form-input, .form-select, .form-textarea {
+  font-family: var(--sans); font-size: 14px; color: var(--ink);
+  background: var(--off-white); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none; width: 100%;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--green-600); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(29,158,117,0.08);
+}
+.form-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+.form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.form-submit { width: 100%; padding: 14px; border-radius: 8px; background: var(--green-700); color: var(--white); font-family: var(--sans); font-size: 15px; font-weight: 500; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px; }
+.form-submit:hover { background: var(--green-800); transform: translateY(-1px); }
+.form-success { display: none; text-align: center; padding: 32px; }
+.form-success-icon { font-size: 48px; margin-bottom: 12px; }
+.form-success-title { font-family: var(--serif); font-size: 24px; color: var(--green-700); margin-bottom: 8px; }
+.form-success-body { font-size: 14px; color: var(--ink-muted); }
+
+/* ── MOBILE MENU ── */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border: none; background: none; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s ease; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0; background: var(--white); z-index: 99; padding: 32px 6vw; overflow-y: auto; flex-direction: column; gap: 0; }
+.mobile-menu.open { display: flex; }
+.mobile-menu-section { margin-bottom: 28px; }
+.mobile-menu-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--green-600); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--green-100); }
+.mobile-menu a { display: block; font-size: 16px; color: var(--ink-mid); text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--border); transition: color 0.2s, padding-left 0.2s; }
+.mobile-menu a:hover { color: var(--green-700); padding-left: 6px; }
+.mobile-menu-cta { display: block; text-align: center; background: var(--green-700); color: var(--white) !important; padding: 16px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; text-decoration: none; margin-top: 24px; border-bottom: none !important; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
   .purpose-inner, .culture-inner, .vm-grid { grid-template-columns: 1fr; }
-  .services-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
   .approach-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
   .approach-steps::before { display: none; }
   .values-grid { grid-template-columns: 1fr 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; }
-  nav .nav-links { display: none; }
+  .nav-links { display: none !important; }
+  .hamburger { display: flex; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   section { padding: 64px 6vw; }
+  .services-grid { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: 1fr; }
   .approach-steps { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
+  .contact-form { padding: 24px 20px; }
 }
 </style>
 </head>
@@ -408,6 +460,9 @@ footer {
     </svg>
     <span class="nav-logo-text">Ybiance</span>
   </a>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li class="has-mega">
       <a href="#services" class="mega-trigger">Services ▾</a>
@@ -436,6 +491,33 @@ footer {
     <li><a href="#contact" class="nav-cta">Talk to us</a></li>
   </ul>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-section">
+    <div class="mobile-menu-label">People Pillar</div>
+    <a href="#services" onclick="closeMobile()">Leadership Development</a>
+    <a href="#services" onclick="closeMobile()">Selling Skills</a>
+    <a href="#services" onclick="closeMobile()">Soft Skills &amp; EQ</a>
+    <a href="#services" onclick="closeMobile()">Change Management</a>
+    <a href="#services" onclick="closeMobile()">Culture Transformation</a>
+  </div>
+  <div class="mobile-menu-section">
+    <div class="mobile-menu-label">Business Solutions</div>
+    <a href="#services" onclick="closeMobile()">Process Engineering</a>
+    <a href="#services" onclick="closeMobile()">HR Policy Design</a>
+    <a href="#services" onclick="closeMobile()">Performance Systems</a>
+    <a href="#services" onclick="closeMobile()">Talent Strategy</a>
+  </div>
+  <div class="mobile-menu-section">
+    <div class="mobile-menu-label">Company</div>
+    <a href="#approach" onclick="closeMobile()">Our Approach</a>
+    <a href="#about" onclick="closeMobile()">About Us</a>
+    <a href="#clients" onclick="closeMobile()">Clients</a>
+    <a href="#vision-mission" onclick="closeMobile()">Vision &amp; Mission</a>
+  </div>
+  <a href="#contact" class="mobile-menu-cta" onclick="closeMobile()">Talk to us →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" style="padding:0;">
@@ -773,16 +855,106 @@ footer {
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section" id="contact">
+<!-- CTA STRIP -->
+<section class="cta-section" style="padding:72px 5vw;">
   <div class="cta-bg-circle-1"></div>
   <div class="cta-bg-circle-2"></div>
   <div class="cta-label">Ready to start?</div>
   <h2 class="cta-h2">Let's build something<br>that actually lasts.</h2>
   <p class="cta-body">Tell us your challenge — whether it's a people problem, a process problem, or both. We'll come back with a perspective, not a pitch deck.</p>
-  <div class="cta-actions">
-    <a href="mailto:hello@ybiance.com" class="btn-white">Get in touch →</a>
-    <a href="#services" class="btn-outline-white">Explore services</a>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="section-eyebrow">Get in touch</div>
+      <h2 class="section-h2">Talk to us.<br>We listen <em>first.</em></h2>
+      <p class="section-lead" style="margin-bottom:40px;">Share your challenge and we'll come back with a perspective — not a sales pitch.</p>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Phone</div>
+          <div class="contact-detail-value">+91 98765 43210</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Email</div>
+          <div class="contact-detail-value">hello@ybiance.com</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="contact-detail-label">Location</div>
+          <div class="contact-detail-value">Jaipur, Rajasthan, India</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form" id="contactFormWrapper">
+      <div id="formContent">
+        <h3 style="font-family:var(--serif);font-size:22px;margin-bottom:24px;color:var(--ink);">Send us a message</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your name *</label>
+            <input type="text" class="form-input" placeholder="Rajesh Kumar" id="f-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Organisation *</label>
+            <input type="text" class="form-input" placeholder="Company name" id="f-org">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-input" placeholder="you@company.com" id="f-email">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" placeholder="+91 98765 43210" id="f-phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What are you looking for?</label>
+          <select class="form-select" id="f-service">
+            <option value="">Select a service area</option>
+            <optgroup label="People Pillar">
+              <option>Leadership Development</option>
+              <option>Selling Skills Training</option>
+              <option>Soft Skills &amp; Emotional Intelligence</option>
+              <option>Change Management</option>
+              <option>Culture Transformation</option>
+            </optgroup>
+            <optgroup label="Business Solutions">
+              <option>Process Engineering</option>
+              <option>HR Policy &amp; Framework Design</option>
+              <option>Performance Management Systems</option>
+              <option>Talent Strategy &amp; Consulting</option>
+            </optgroup>
+            <option>Not sure — need a consultation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tell us about your challenge</label>
+          <textarea class="form-textarea" placeholder="Describe what you're facing — team size, sector, goals. The more context, the better our response." id="f-message"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send message →</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✅</div>
+        <div class="form-success-title">Message received!</div>
+        <div class="form-success-body">Thank you for reaching out. The Ybiance team will get back to you within one business day with a thoughtful response — not a template.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -834,20 +1006,58 @@ footer {
 </footer>
 
 <script>
+// Scroll animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
+      e.target.style.opacity = "1";
+      e.target.style.transform = "translateY(0)";
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 
-document.querySelectorAll('.service-item, .value-card, .purpose-card, .culture-item, .vm-card, .stat-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(16px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+document.querySelectorAll(".service-item, .value-card, .purpose-card, .culture-item, .vm-card, .stat-card, .contact-detail, .contact-form").forEach(el => {
+  el.style.opacity = "0";
+  el.style.transform = "translateY(16px)";
+  el.style.transition = "opacity 0.55s ease, transform 0.55s ease";
   observer.observe(el);
+});
+
+// Mobile menu
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("open");
+  mobileMenu.classList.toggle("open");
+  document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
+});
+function closeMobile() {
+  hamburger.classList.remove("open");
+  mobileMenu.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+// Contact form
+function submitForm() {
+  const name = document.getElementById("f-name").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const org = document.getElementById("f-org").value.trim();
+  if (!name || !email || !org) {
+    alert("Please fill in your name, organisation, and email to continue.");
+    return;
+  }
+  document.getElementById("formContent").style.display = "none";
+  document.getElementById("formSuccess").style.display = "block";
+}
+
+// Nav scroll effect
+window.addEventListener("scroll", () => {
+  const nav = document.querySelector("nav");
+  if (window.scrollY > 20) {
+    nav.style.boxShadow = "0 2px 20px rgba(0,0,0,0.08)";
+  } else {
+    nav.style.boxShadow = "none";
+  }
 });
 </script>
 
