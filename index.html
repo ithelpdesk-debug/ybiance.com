@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+<!-- 
+  ⚠️  DEVELOPER NOTE — HTTPS / SSL
+  The site is currently served over HTTP (Not Secure).
+  To fix this, install a free SSL certificate via Let's Encrypt:
+  1. If on cPanel hosting: Go to cPanel → SSL/TLS → Install Let's Encrypt (AutoSSL)
+  2. If on Apache/Nginx VPS: Run: sudo certbot --nginx (or --apache)
+  3. If on WordPress: Install the "Really Simple SSL" plugin
+  4. Force HTTPS redirect in .htaccess:
+     RewriteEngine On
+     RewriteCond %{HTTPS} off
+     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  This will remove the "Not Secure" warning in all browsers.
+-->
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -562,18 +576,22 @@ footer {
         </svg>
       </div>
     </div>
-    <div class="hero-stats">
+    <div class="hero-stats" style="grid-template-columns:repeat(4,1fr);">
       <div class="stat-card">
         <div class="stat-num">10+</div>
         <div class="stat-label">Years of impact since 2014</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">50+</div>
-        <div class="stat-label">Clients across sectors</div>
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Clients served</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">2</div>
-        <div class="stat-label">Integrated pillars — People & Systems</div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">Countries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">14</div>
+        <div class="stat-label">States across India</div>
       </div>
     </div>
   </div>
@@ -836,7 +854,7 @@ footer {
 <section class="clients" id="clients">
   <div class="section-eyebrow" style="justify-content:center;">Trusted by</div>
   <h2 class="section-h2">Organizations that chose<br><em>to grow with us</em></h2>
-  <p class="section-lead" style="margin:0 auto;">From MSMEs to large enterprises, across banking, FMCG, education, aviation, and more.</p>
+  <p class="section-lead" style="margin:0 auto;">200+ clients served across 14 states and 4 countries — banking, insurance, FMCG, education, aviation, infrastructure, and more.</p>
   <div class="clients-logo-row">
     <span class="client-pill">LIC of India</span>
     <span class="client-pill">State Bank of India</span>
@@ -877,7 +895,7 @@ footer {
         </div>
         <div>
           <div class="contact-detail-label">Phone</div>
-          <div class="contact-detail-value">+91 98765 43210</div>
+          <div class="contact-detail-value">+91 99295 54055</div>
         </div>
       </div>
       <div class="contact-detail">
