@@ -1,597 +1,689 @@
 <!DOCTYPE html>
-<!-- 
-  ⚠️  DEVELOPER NOTE — HTTPS / SSL
-  The site is currently served over HTTP (Not Secure).
-  To fix this, install a free SSL certificate via Let's Encrypt:
-  1. If on cPanel hosting: Go to cPanel → SSL/TLS → Install Let's Encrypt (AutoSSL)
-  2. If on Apache/Nginx VPS: Run: sudo certbot --nginx (or --apache)
-  3. If on WordPress: Install the "Really Simple SSL" plugin
-  4. Force HTTPS redirect in .htaccess:
-     RewriteEngine On
-     RewriteCond %{HTTPS} off
-     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-  This will remove the "Not Secure" warning in all browsers.
--->
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ybiance — Grow your people. Strengthen your business.</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --green-900: #04342C;
-  --green-800: #085041;
-  --green-700: #0F6E56;
-  --green-600: #1D9E75;
-  --green-400: #5DCAA5;
-  --green-200: #9FE1CB;
-  --green-100: #E1F5EE;
-  --green-50:  #F2FAF7;
-  --ink:       #111111;
-  --ink-mid:   #3A3A3A;
-  --ink-muted: #6B6B6B;
-  --ink-faint: #A8A8A8;
-  --white:     #FFFFFF;
-  --off-white: #F8F7F4;
-  --border:    rgba(0,0,0,0.08);
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans:  'Sora', sans-serif;
-}
+  :root {
+    --navy: #0D2B5E;
+    --navy-deep: #071A3A;
+    --navy-mid: #1A3F80;
+    --navy-light: #EAF0FA;
+    --cyan: #22BFDA;
+    --cyan-light: #7ECFDF;
+    --cyan-pale: #E6F9FC;
+    --white: #FFFFFF;
+    --off-white: #F7F8FC;
+    --text-dark: #0D1B2A;
+    --text-body: #2C3E5A;
+    --text-muted: #6B7FA3;
+    --border: rgba(13,43,94,0.10);
+  }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; }
 
-body {
-  font-family: var(--sans);
-  background: var(--white);
-  color: var(--ink);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5vw;
-  height: 68px;
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.nav-logo svg { width: 32px; height: 32px; }
-.nav-logo-text { font-family: var(--sans); font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; }
-.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-.nav-links > li { position: relative; display: flex; align-items: center; height: 68px; }
-.nav-links a { font-size: 14px; font-weight: 400; color: var(--ink-muted); text-decoration: none; transition: color 0.2s; }
-.nav-links a:hover { color: var(--green-700); }
-.nav-cta {
-  background: var(--green-700); color: var(--white) !important;
-  padding: 8px 20px; border-radius: 6px;
-  font-weight: 500 !important; font-size: 13px !important;
-  transition: background 0.2s !important;
-}
-.nav-cta:hover { background: var(--green-800) !important; color: var(--white) !important; }
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(7,26,58,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(34,191,218,0.15);
+    padding: 0 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
 
-/* ── MEGA MENU ── */
-.mega-menu {
-  display: none;
-  position: absolute; top: 68px; left: 50%; transform: translateX(-50%);
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
-  padding: 24px 28px;
-  gap: 0;
-  min-width: 400px;
-  flex-direction: row;
-  z-index: 200;
-}
-.has-mega:hover .mega-menu { display: flex; }
-.mega-col { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.mega-col-title {
-  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--green-600); margin-bottom: 10px; padding-bottom: 8px;
-  border-bottom: 1px solid var(--green-100);
-}
-.mega-col a {
-  font-size: 13px; color: var(--ink-mid) !important; padding: 6px 0;
-  display: block; border-radius: 4px;
-  transition: color 0.15s, padding-left 0.15s !important;
-}
-.mega-col a:hover { color: var(--green-700) !important; padding-left: 4px !important; }
-.mega-divider { width: 1px; background: var(--border); margin: 0 24px; flex-shrink: 0; }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-shield {
+    width: 36px; height: 36px;
+    background: var(--navy-mid);
+    border-radius: 8px 8px 14px 14px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    border: 1.5px solid var(--cyan);
+  }
+  .nav-logo-y {
+    color: var(--white);
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+  }
+  .nav-logo-arrow {
+    position: absolute; top: -4px; right: -4px;
+    width: 10px; height: 10px;
+    background: var(--cyan);
+    border-radius: 50%;
+  }
+  .nav-logo-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px; font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.3px;
+  }
+  .nav-logo-text span { color: var(--cyan); }
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding-top: 68px;
-  position: relative;
-  overflow: hidden;
-}
-.hero-left {
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 5vw 80px 5vw;
-  position: relative; z-index: 2;
-}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--green-600);
-  margin-bottom: 28px;
-}
-.hero-eyebrow::before {
-  content: ''; display: block;
-  width: 24px; height: 2px; background: var(--green-600);
-}
-.hero-h1 {
-  font-family: var(--serif);
-  font-size: clamp(38px, 4.5vw, 62px);
-  line-height: 1.1;
-  color: var(--ink);
-  margin-bottom: 10px;
-}
-.hero-h1 em { font-style: italic; color: var(--green-700); }
-.hero-tagline {
-  font-family: var(--serif);
-  font-size: clamp(18px, 2vw, 26px);
-  color: var(--ink-muted);
-  margin-bottom: 32px;
-  font-style: italic;
-}
-.hero-body {
-  font-size: 15px; line-height: 1.8; color: var(--ink-muted);
-  max-width: 480px; margin-bottom: 44px;
-}
-.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.btn-primary {
-  background: var(--green-700); color: var(--white);
-  padding: 14px 28px; border-radius: 8px;
-  font-family: var(--sans); font-size: 14px; font-weight: 500;
-  text-decoration: none; transition: background 0.2s, transform 0.15s;
-  display: inline-block;
-}
-.btn-primary:hover { background: var(--green-800); transform: translateY(-1px); }
-.btn-ghost {
-  background: transparent; color: var(--ink);
-  padding: 14px 28px; border-radius: 8px; border: 1px solid var(--border);
-  font-family: var(--sans); font-size: 14px; font-weight: 500;
-  text-decoration: none; transition: border-color 0.2s, transform 0.15s;
-  display: inline-block;
-}
-.btn-ghost:hover { border-color: var(--green-600); color: var(--green-700); transform: translateY(-1px); }
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px; font-weight: 400;
+    transition: color 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .nav-links a:hover { color: var(--cyan-light); }
 
-.hero-right {
-  position: relative; overflow: hidden;
-  background: var(--green-50);
-}
-.hero-right-inner {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-.hero-graphic {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-}
-.hero-stats {
-  position: absolute; bottom: 48px; left: 48px; right: 48px;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-}
-.stat-card {
-  background: var(--white); border-radius: 12px;
-  padding: 20px; border: 1px solid rgba(0,0,0,0.06);
-}
-.stat-num {
-  font-family: var(--serif); font-size: 36px; color: var(--green-700);
-  line-height: 1; margin-bottom: 4px;
-}
-.stat-label { font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
+  .nav-cta {
+    background: var(--cyan);
+    color: var(--navy-deep) !important;
+    font-weight: 600 !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { background: var(--cyan-light) !important; transform: translateY(-1px); }
 
-/* ── SECTION BASE ── */
-section { padding: 96px 5vw; }
-.section-eyebrow {
-  font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--green-600); margin-bottom: 16px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-eyebrow::before { content:''; display:block; width:20px; height:2px; background:var(--green-600); }
-.section-h2 {
-  font-family: var(--serif);
-  font-size: clamp(28px, 3.5vw, 48px);
-  line-height: 1.15; color: var(--ink);
-  margin-bottom: 20px;
-}
-.section-h2 em { font-style: italic; color: var(--green-700); }
-.section-lead {
-  font-size: 16px; line-height: 1.8; color: var(--ink-muted);
-  max-width: 580px;
-}
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy-deep);
+    position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+    padding: 100px 5vw 60px;
+  }
 
-/* ── PURPOSE ── */
-.purpose { background: var(--off-white); }
-.purpose-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.purpose-cards { display: flex; flex-direction: column; gap: 16px; }
-.purpose-card {
-  background: var(--white); border-radius: 12px;
-  padding: 28px; border: 1px solid var(--border);
-  display: flex; gap: 20px; align-items: flex-start;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.purpose-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-.purpose-icon {
-  width: 44px; height: 44px; border-radius: 10px;
-  background: var(--green-100); display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.purpose-icon svg { width: 22px; height: 22px; stroke: var(--green-700); }
-.purpose-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
-.purpose-card-body { font-size: 13px; line-height: 1.7; color: var(--ink-muted); }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(34,191,218,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,191,218,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-bg-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(26,63,128,0.6) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    pointer-events: none;
+  }
+  .hero-bg-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(34,191,218,0.08) 0%, transparent 70%);
+    bottom: 0; left: 10%;
+    pointer-events: none;
+  }
 
-/* ── SERVICES ── */
-.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 56px; }
-.service-item {
-  background: var(--white); padding: 36px 32px;
-  transition: background 0.2s;
-  cursor: default;
-}
-.service-item:hover { background: var(--green-50); }
-.service-num { font-family: var(--serif); font-size: 40px; color: var(--green-200); line-height: 1; margin-bottom: 16px; }
-.service-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--ink); }
-.service-body { font-size: 13px; line-height: 1.7; color: var(--ink-muted); }
-.service-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-.tag { font-size: 11px; color: var(--green-700); background: var(--green-100); padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .hero-content { position: relative; z-index: 1; max-width: 760px; }
 
-/* ── APPROACH ── */
-.approach { background: var(--green-900); color: var(--white); }
-.approach .section-eyebrow { color: var(--green-400); }
-.approach .section-eyebrow::before { background: var(--green-400); }
-.approach .section-h2 { color: var(--white); }
-.approach .section-lead { color: rgba(255,255,255,0.6); }
-.approach-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 64px; position: relative; }
-.approach-steps::before {
-  content: ''; position: absolute;
-  top: 28px; left: 10%; right: 10%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green-600), var(--green-600), var(--green-600), transparent);
-}
-.approach-step { padding: 0 24px; text-align: center; position: relative; }
-.step-circle {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--green-700); color: var(--white);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-size: 22px;
-  margin: 0 auto 24px; position: relative; z-index: 2;
-  border: 3px solid var(--green-900);
-  box-shadow: 0 0 0 1px var(--green-600);
-}
-.step-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
-.step-body { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.5); }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(34,191,218,0.12);
+    border: 1px solid rgba(34,191,218,0.3);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 500;
+    color: var(--cyan-light);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s infinite;
+  }
 
-/* ── VISION MISSION ── */
-.vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 56px; }
-.vm-card {
-  border-radius: 16px; padding: 48px 40px; position: relative; overflow: hidden;
-}
-.vm-card.vision { background: var(--green-700); color: var(--white); }
-.vm-card.mission { background: var(--off-white); border: 1px solid var(--border); }
-.vm-label {
-  font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-  margin-bottom: 20px; opacity: 0.7;
-}
-.vm-card.vision .vm-label { color: var(--green-200); }
-.vm-card.mission .vm-label { color: var(--green-600); }
-.vm-text {
-  font-family: var(--serif); font-size: clamp(20px, 2vw, 28px);
-  line-height: 1.3;
-}
-.vm-card.vision .vm-text { color: var(--white); }
-.vm-card.mission .vm-text { color: var(--ink); }
-.vm-body { font-size: 14px; line-height: 1.8; margin-top: 20px; }
-.vm-card.vision .vm-body { color: rgba(255,255,255,0.7); }
-.vm-card.mission .vm-body { color: var(--ink-muted); }
-.vm-deco {
-  position: absolute; bottom: -30px; right: -30px;
-  width: 140px; height: 140px; border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-}
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
 
-/* ── VALUES ── */
-.values { background: var(--off-white); }
-.values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
-.value-card {
-  background: var(--white); border-radius: 12px;
-  padding: 32px 28px; border: 1px solid var(--border);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.value-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
-.value-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green-600); margin-bottom: 20px; }
-.value-title { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
-.value-body { font-size: 13px; line-height: 1.7; color: var(--ink-muted); }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 6vw, 78px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--cyan);
+  }
 
-/* ── CULTURE ── */
-.culture-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.culture-list { display: flex; flex-direction: column; gap: 0; }
-.culture-item {
-  display: flex; gap: 20px; padding: 24px 0;
-  border-bottom: 1px solid var(--border);
-}
-.culture-item:first-child { padding-top: 0; }
-.culture-item:last-child { border-bottom: none; }
-.culture-num {
-  font-family: var(--serif); font-size: 32px; color: var(--green-200);
-  line-height: 1; flex-shrink: 0; width: 40px;
-}
-.culture-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-.culture-body { font-size: 13px; line-height: 1.7; color: var(--ink-muted); }
+  .hero-sub {
+    font-size: clamp(16px, 1.8vw, 20px);
+    color: rgba(255,255,255,0.65);
+    line-height: 1.65;
+    max-width: 560px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
 
-/* ── CLIENTS ── */
-.clients { background: var(--off-white); text-align: center; }
-.clients-logo-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 48px; }
-.client-pill {
-  background: var(--white); border: 1px solid var(--border); border-radius: 40px;
-  padding: 10px 22px; font-size: 13px; font-weight: 500; color: var(--ink-mid);
-  transition: border-color 0.2s, color 0.2s;
-}
-.client-pill:hover { border-color: var(--green-400); color: var(--green-700); }
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--navy-deep);
+    font-weight: 600; font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: #3ACFE8; transform: translateY(-2px); }
 
-/* ── CTA ── */
-.cta-section {
-  background: var(--green-700);
-  text-align: center; padding: 120px 5vw;
-  position: relative; overflow: hidden;
-}
-.cta-bg-circle-1 { position: absolute; top: -80px; left: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.04); }
-.cta-bg-circle-2 { position: absolute; bottom: -60px; right: -60px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,0.04); }
-.cta-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--green-200); margin-bottom: 20px; }
-.cta-h2 { font-family: var(--serif); font-size: clamp(32px, 4vw, 54px); color: var(--white); line-height: 1.15; margin-bottom: 20px; }
-.cta-body { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 520px; margin: 0 auto 40px; line-height: 1.8; }
-.cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.btn-white {
-  background: var(--white); color: var(--green-700);
-  padding: 14px 32px; border-radius: 8px;
-  font-family: var(--sans); font-size: 14px; font-weight: 600;
-  text-decoration: none; transition: background 0.2s, transform 0.15s;
-}
-.btn-white:hover { background: var(--green-100); transform: translateY(-1px); }
-.btn-outline-white {
-  background: transparent; color: var(--white);
-  padding: 14px 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.4);
-  font-family: var(--sans); font-size: 14px; font-weight: 500;
-  text-decoration: none; transition: border-color 0.2s, transform 0.15s;
-}
-.btn-outline-white:hover { border-color: rgba(255,255,255,0.8); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400; font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan-light); color: var(--cyan-light); }
 
-/* ── FOOTER ── */
-footer {
-  background: var(--ink); color: rgba(255,255,255,0.6);
-  padding: 64px 5vw 40px;
-}
-.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
-.footer-brand-name { font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 12px; }
-.footer-tagline { font-family: var(--serif); font-size: 15px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 20px; line-height: 1.5; }
-.footer-col-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
-.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer-links a { font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--green-400); }
-.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); }
-.footer-copy { font-size: 13px; }
-.footer-location { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .hero-stats {
+    position: absolute; bottom: 40px; left: 5vw; right: 5vw;
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 32px;
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+  .stat {
+    flex: 1;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    padding: 0 32px;
+  }
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 700;
+    color: var(--cyan);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    font-weight: 300; letter-spacing: 0.02em;
+  }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-.fade-up { opacity: 0; animation: fadeUp 0.7s ease forwards; }
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.35s; }
-.delay-4 { animation-delay: 0.5s; }
-.delay-5 { animation-delay: 0.65s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-/* ── CONTACT FORM ── */
-.contact-section { background: var(--off-white); }
-.contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
-.contact-info { padding-top: 8px; }
-.contact-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 28px; }
-.contact-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--green-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.contact-icon svg { width: 18px; height: 18px; stroke: var(--green-700); }
-.contact-detail-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green-600); margin-bottom: 4px; }
-.contact-detail-value { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
-.contact-form { background: var(--white); border-radius: 16px; padding: 40px; border: 1px solid var(--border); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-.form-label { font-size: 12px; font-weight: 500; color: var(--ink-mid); letter-spacing: 0.3px; }
-.form-input, .form-select, .form-textarea {
-  font-family: var(--sans); font-size: 14px; color: var(--ink);
-  background: var(--off-white); border: 1px solid var(--border);
-  border-radius: 8px; padding: 12px 14px;
-  transition: border-color 0.2s, background 0.2s;
-  outline: none; width: 100%;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--green-600); background: var(--white);
-  box-shadow: 0 0 0 3px rgba(29,158,117,0.08);
-}
-.form-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
-.form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-.form-submit { width: 100%; padding: 14px; border-radius: 8px; background: var(--green-700); color: var(--white); font-family: var(--sans); font-size: 15px; font-weight: 500; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px; }
-.form-submit:hover { background: var(--green-800); transform: translateY(-1px); }
-.form-success { display: none; text-align: center; padding: 32px; }
-.form-success-icon { font-size: 48px; margin-bottom: 12px; }
-.form-success-title { font-family: var(--serif); font-size: 24px; color: var(--green-700); margin-bottom: 8px; }
-.form-success-body { font-size: 14px; color: var(--ink-muted); }
+  /* ── SECTIONS COMMON ── */
+  section { padding: 100px 5vw; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .section-title em { font-style: italic; color: var(--navy-mid); }
+  .section-sub {
+    font-size: 17px; color: var(--text-muted);
+    line-height: 1.7; font-weight: 300;
+    max-width: 560px;
+  }
 
-/* ── MOBILE MENU ── */
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border: none; background: none; }
-.hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s ease; }
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-.mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0; background: var(--white); z-index: 99; padding: 32px 6vw; overflow-y: auto; flex-direction: column; gap: 0; }
-.mobile-menu.open { display: flex; }
-.mobile-menu-section { margin-bottom: 28px; }
-.mobile-menu-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--green-600); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--green-100); }
-.mobile-menu a { display: block; font-size: 16px; color: var(--ink-mid); text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--border); transition: color 0.2s, padding-left 0.2s; }
-.mobile-menu a:hover { color: var(--green-700); padding-left: 6px; }
-.mobile-menu-cta { display: block; text-align: center; background: var(--green-700); color: var(--white) !important; padding: 16px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; text-decoration: none; margin-top: 24px; border-bottom: none !important; }
+  /* ── PURPOSE ── */
+  .purpose { background: var(--off-white); }
+  .purpose-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .purpose-pillars { display: flex; flex-direction: column; gap: 20px; }
+  .pillar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    border-left: 4px solid var(--cyan);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pillar:hover { box-shadow: 0 8px 32px rgba(13,43,94,0.10); transform: translateX(4px); }
+  .pillar-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 8px; display: block;
+  }
+  .pillar h3 {
+    font-size: 18px; font-weight: 600; color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .pillar p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .pillar-tags {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+  }
+  .tag {
+    background: var(--navy-light);
+    color: var(--navy-mid);
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 100px;
+  }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-right { display: none; }
-  .purpose-inner, .culture-inner, .vm-grid { grid-template-columns: 1fr; }
-  .services-grid { grid-template-columns: 1fr 1fr; }
-  .approach-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .approach-steps::before { display: none; }
-  .values-grid { grid-template-columns: 1fr 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
-  .nav-links { display: none !important; }
-  .hamburger { display: flex; }
-  .contact-inner { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-}
-@media (max-width: 600px) {
-  section { padding: 64px 6vw; }
-  .services-grid { grid-template-columns: 1fr; }
-  .values-grid { grid-template-columns: 1fr; }
-  .approach-steps { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; }
-  .contact-form { padding: 24px 20px; }
-}
+  /* ── SERVICES ── */
+  .services { background: var(--white); }
+  .services-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 56px;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .service-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    background: var(--white);
+    position: relative; overflow: hidden;
+    transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--cyan);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .service-card:hover { box-shadow: 0 12px 40px rgba(13,43,94,0.10); transform: translateY(-4px); border-color: rgba(34,191,218,0.3); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--cyan);
+    font-weight: 500; margin-bottom: 16px;
+    display: block;
+  }
+  .service-card h3 {
+    font-size: 17px; font-weight: 600; color: var(--navy);
+    margin-bottom: 10px; line-height: 1.3;
+  }
+  .service-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+  .service-badge {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+  }
+  .badge-people { background: var(--navy-light); color: var(--navy-mid); }
+  .badge-business { background: var(--cyan-pale); color: #1490A8; }
+
+  /* ── APPROACH ── */
+  .approach { background: var(--navy); }
+  .approach .section-title { color: var(--white); }
+  .approach .section-sub { color: rgba(255,255,255,0.55); }
+  .approach-steps {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 0; margin-top: 60px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; overflow: hidden;
+  }
+  .step {
+    padding: 40px 32px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    transition: background 0.25s;
+  }
+  .step:last-child { border-right: none; }
+  .step:hover { background: rgba(255,255,255,0.04); }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; font-weight: 900;
+    color: rgba(34,191,218,0.15);
+    line-height: 1; margin-bottom: 20px;
+    display: block;
+  }
+  .step h3 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+  .step p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+  .step-line {
+    position: absolute; top: 40px; right: -1px;
+    width: 2px; height: 32px;
+    background: var(--cyan);
+    display: none;
+  }
+  .step:hover .step-line { display: block; }
+
+  /* ── VALUES ── */
+  .values { background: var(--off-white); }
+  .values-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    transition: box-shadow 0.2s;
+  }
+  .value-card:hover { box-shadow: 0 8px 28px rgba(13,43,94,0.09); }
+  .value-icon {
+    width: 44px; height: 44px;
+    background: var(--navy-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+  .value-card h3 { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .value-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── CULTURE CODE ── */
+  .culture { background: var(--white); }
+  .culture-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 56px;
+  }
+  .culture-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    display: flex; gap: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .culture-card:hover { border-color: var(--cyan); box-shadow: 0 6px 24px rgba(34,191,218,0.08); }
+  .culture-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px; font-weight: 500;
+    color: var(--cyan);
+    line-height: 1; flex-shrink: 0;
+    opacity: 0.4;
+  }
+  .culture-card h3 { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .culture-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── CLIENTS ── */
+  .clients { background: var(--navy-deep); padding: 80px 5vw; }
+  .clients .section-title { color: var(--white); }
+  .clients .section-sub { color: rgba(255,255,255,0.5); }
+  .clients-marquee-wrap {
+    overflow: hidden;
+    margin-top: 48px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
+  }
+  .clients-marquee {
+    display: flex; gap: 0;
+    animation: marquee 28s linear infinite;
+    width: max-content;
+  }
+  .clients-marquee:hover { animation-play-state: paused; }
+  .client-item {
+    flex-shrink: 0;
+    padding: 0 40px;
+    font-size: 14px; font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    white-space: nowrap;
+    transition: color 0.2s;
+    cursor: default;
+    display: flex; align-items: center; height: 48px;
+  }
+  .client-item:hover { color: var(--cyan-light); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .clients-sectors {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px;
+  }
+  .sector-tag {
+    background: rgba(34,191,218,0.08);
+    border: 1px solid rgba(34,191,218,0.2);
+    color: var(--cyan-light);
+    font-size: 12px; font-weight: 500;
+    padding: 6px 16px; border-radius: 100px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── VISION MISSION ── */
+  .vision-mission { background: var(--off-white); }
+  .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+  .vm-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 40px;
+  }
+  .vm-card.vision { border-top: 4px solid var(--navy); }
+  .vm-card.mission { border-top: 4px solid var(--cyan); }
+  .vm-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; display: block;
+  }
+  .vm-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--navy); line-height: 1.4;
+    margin-bottom: 20px;
+  }
+  .vm-body { font-size: 14px; color: var(--text-muted); line-height: 1.75; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--navy); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact .section-title { color: var(--white); }
+  .contact .section-sub { color: rgba(255,255,255,0.5); margin-top: 16px; }
+  .contact-details { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
+  .contact-detail {
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .contact-detail-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(34,191,218,0.12);
+    border: 1px solid rgba(34,191,218,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 18px;
+  }
+  .contact-detail-text { padding-top: 2px; }
+  .contact-detail-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 3px; display: block;
+  }
+  .contact-detail-val { font-size: 15px; color: rgba(255,255,255,0.8); }
+  .contact-form {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 40px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.5); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--cyan); }
+  .form-group select { appearance: none; cursor: pointer; }
+  .form-group select option { background: var(--navy-deep); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%;
+    background: var(--cyan);
+    color: var(--navy-deep);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 15px;
+    padding: 14px;
+    border-radius: 8px;
+    border: none; cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .form-submit:hover { background: #3ACFE8; transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 60px 5vw 32px;
+  }
+  .footer-inner {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand p {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    line-height: 1.7; margin-top: 16px; max-width: 280px;
+  }
+  .footer-col h4 {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a {
+    font-size: 14px; color: rgba(255,255,255,0.5);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--cyan-light); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 13px; color: rgba(255,255,255,0.25);
+  }
+  .footer-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px; color: rgba(34,191,218,0.4);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .purpose-inner, .contact-inner, .vm-grid { grid-template-columns: 1fr; gap: 40px; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .approach-steps { grid-template-columns: 1fr 1fr; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .culture-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .hero-stats { position: static; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 32px; }
+    .hero { min-height: auto; padding-bottom: 60px; }
+    .stat { padding: 0 20px; }
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .services-grid, .approach-steps, .values-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; }
+    .stat { flex: 0 0 50%; border-right: none; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
-    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="32" height="32" rx="7" fill="#0F6E56"/>
-      <path d="M9 9L16 20.5V27M23 9L16 20.5" stroke="#9FE1CB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span class="nav-logo-text">Ybiance</span>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-shield">
+      <span class="nav-logo-y">Y</span>
+      <div class="nav-logo-arrow"></div>
+    </div>
+    <span class="nav-logo-text">Y<span>b</span>iance</span>
   </a>
-  <button class="hamburger" id="hamburger" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
   <ul class="nav-links">
-    <li class="has-mega">
-      <a href="#services" class="mega-trigger">Services ▾</a>
-      <div class="mega-menu">
-        <div class="mega-col">
-          <div class="mega-col-title">People Pillar</div>
-          <a href="#services">Leadership Development</a>
-          <a href="#services">Selling Skills</a>
-          <a href="#services">Soft Skills &amp; EQ</a>
-          <a href="#services">Change Management</a>
-          <a href="#services">Culture Transformation</a>
-        </div>
-        <div class="mega-divider"></div>
-        <div class="mega-col">
-          <div class="mega-col-title">Business Solutions</div>
-          <a href="#services">Process Engineering</a>
-          <a href="#services">HR Policy Design</a>
-          <a href="#services">Performance Systems</a>
-          <a href="#services">Talent Strategy</a>
-        </div>
-      </div>
-    </li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#approach">Our Approach</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#vision-mission">About</a></li>
     <li><a href="#clients">Clients</a></li>
-    <li><a href="#contact" class="nav-cta">Talk to us</a></li>
+    <li><a href="#contact" class="nav-cta">Talk to us →</a></li>
   </ul>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-label">People Pillar</div>
-    <a href="#services" onclick="closeMobile()">Leadership Development</a>
-    <a href="#services" onclick="closeMobile()">Selling Skills</a>
-    <a href="#services" onclick="closeMobile()">Soft Skills &amp; EQ</a>
-    <a href="#services" onclick="closeMobile()">Change Management</a>
-    <a href="#services" onclick="closeMobile()">Culture Transformation</a>
-  </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-label">Business Solutions</div>
-    <a href="#services" onclick="closeMobile()">Process Engineering</a>
-    <a href="#services" onclick="closeMobile()">HR Policy Design</a>
-    <a href="#services" onclick="closeMobile()">Performance Systems</a>
-    <a href="#services" onclick="closeMobile()">Talent Strategy</a>
-  </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-label">Company</div>
-    <a href="#approach" onclick="closeMobile()">Our Approach</a>
-    <a href="#about" onclick="closeMobile()">About Us</a>
-    <a href="#clients" onclick="closeMobile()">Clients</a>
-    <a href="#vision-mission" onclick="closeMobile()">Vision &amp; Mission</a>
-  </div>
-  <a href="#contact" class="mobile-menu-cta" onclick="closeMobile()">Talk to us →</a>
-</div>
-
 <!-- HERO -->
-<section class="hero" style="padding:0;">
-  <div class="hero-left">
-    <div class="hero-eyebrow fade-up">Since 2014 · Jaipur, India</div>
-    <h1 class="hero-h1 fade-up delay-1">
-      Grow your <em>people.</em><br>Strengthen your <em>business.</em>
-    </h1>
-    <p class="hero-tagline fade-up delay-2">People-first. Performance-driven.</p>
-    <p class="hero-body fade-up delay-3">
-      Ybiance integrates corporate training, HR strategy, process engineering, and culture transformation into one partner — that stays with you until results are real.
-    </p>
-    <div class="hero-actions fade-up delay-4">
+<section class="hero" id="home">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Since 2014 · Jaipur, India
+    </div>
+    <h1>Grow your <em>people.</em><br>Strengthen your <em>business.</em></h1>
+    <p class="hero-sub">Ybiance integrates corporate training, HR strategy, process engineering, and culture transformation into one partner — that stays with you until results are real.</p>
+    <div class="hero-actions">
       <a href="#contact" class="btn-primary">Talk to us →</a>
       <a href="#services" class="btn-ghost">Explore services</a>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-right-inner">
-      <div class="hero-graphic">
-        <svg viewBox="0 0 500 500" width="380" height="380" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="250" cy="250" r="200" stroke="#9FE1CB" stroke-width="1" stroke-dasharray="6 8" opacity="0.4"/>
-          <circle cx="250" cy="250" r="140" stroke="#5DCAA5" stroke-width="1" stroke-dasharray="4 6" opacity="0.3"/>
-          <circle cx="250" cy="250" r="80" fill="#E1F5EE" opacity="0.8"/>
-          <circle cx="250" cy="250" r="50" fill="#1D9E75" opacity="0.9"/>
-          <path d="M230 250L250 218L270 250" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M250 250V278" stroke="white" stroke-width="3" stroke-linecap="round"/>
-          <!-- Orbiting nodes -->
-          <circle cx="250" cy="50" r="18" fill="#0F6E56"/>
-          <circle cx="432" cy="160" r="14" fill="#1D9E75"/>
-          <circle cx="432" cy="340" r="18" fill="#0F6E56"/>
-          <circle cx="250" cy="450" r="14" fill="#1D9E75"/>
-          <circle cx="68" cy="340" r="18" fill="#0F6E56"/>
-          <circle cx="68" cy="160" r="14" fill="#1D9E75"/>
-          <!-- Lines from center -->
-          <line x1="250" y1="200" x2="250" y2="68" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-          <line x1="250" y1="200" x2="414" y2="178" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-          <line x1="250" y1="300" x2="414" y2="322" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-          <line x1="250" y1="300" x2="250" y2="432" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-          <line x1="250" y1="300" x2="86" y2="322" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-          <line x1="250" y1="200" x2="86" y2="178" stroke="#9FE1CB" stroke-width="1" opacity="0.5"/>
-        </svg>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Years of impact</div>
       </div>
-    </div>
-    <div class="hero-stats" style="grid-template-columns:repeat(4,1fr);">
-      <div class="stat-card">
-        <div class="stat-num">10+</div>
-        <div class="stat-label">Years of impact since 2014</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">200+</div>
+      <div class="stat">
+        <div class="stat-number">200+</div>
         <div class="stat-label">Clients served</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Countries</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">14</div>
+      <div class="stat">
+        <div class="stat-number">14</div>
         <div class="stat-label">States across India</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Countries</div>
       </div>
     </div>
   </div>
@@ -601,44 +693,32 @@ footer {
 <section class="purpose" id="about">
   <div class="purpose-inner">
     <div>
-      <div class="section-eyebrow">Our purpose</div>
-      <h2 class="section-h2">We solve the<br><em>whole problem.</em></h2>
-      <p class="section-lead">
-        Most organizations try to fix performance with training alone — or with process redesign alone. Ybiance does both, because we know that lasting change requires developing the people and rebuilding the systems they work within.
-      </p>
+      <span class="section-eyebrow">Our Purpose</span>
+      <h2 class="section-title">We solve the<br><em>whole problem.</em></h2>
+      <p class="section-sub">Most organisations fix performance with training alone — or process redesign alone. Ybiance does both, because lasting change requires developing the people and rebuilding the systems they work within.</p>
     </div>
-    <div class="purpose-cards">
-      <div class="purpose-card">
-        <div class="purpose-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        </div>
-        <div>
-          <div class="purpose-card-title">People Pillar</div>
-          <div class="purpose-card-body">Corporate training, leadership development, selling skills, emotional intelligence, change management, and wellness — developing the humans who drive your business.</div>
-        </div>
-      </div>
-      <div class="purpose-card">
-        <div class="purpose-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="purpose-card-title">Business Pillar</div>
-          <div class="purpose-card-body">Process engineering, HR policy & frameworks, performance management systems, talent strategy, and culture transformation — building the systems your people operate within.</div>
+    <div class="purpose-pillars">
+      <div class="pillar">
+        <span class="pillar-label">People Pillar</span>
+        <h3>Developing the humans who drive your business.</h3>
+        <p>Corporate training, leadership development, selling skills, emotional intelligence, change management, and wellness.</p>
+        <div class="pillar-tags">
+          <span class="tag">Leadership</span>
+          <span class="tag">Selling Skills</span>
+          <span class="tag">EQ</span>
+          <span class="tag">Change Mgmt</span>
+          <span class="tag">Wellness</span>
         </div>
       </div>
-      <div class="purpose-card">
-        <div class="purpose-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-        </div>
-        <div>
-          <div class="purpose-card-title">Integrated Approach</div>
-          <div class="purpose-card-body">We don't hand over a report and leave. We stay alongside you — from diagnosis to delivery to embedded results.</div>
+      <div class="pillar">
+        <span class="pillar-label">Business Solutions</span>
+        <h3>Building the systems your people operate within.</h3>
+        <p>Process engineering, HR policy & frameworks, performance management systems, talent strategy, and culture transformation.</p>
+        <div class="pillar-tags">
+          <span class="tag">Process Eng.</span>
+          <span class="tag">HR Policy</span>
+          <span class="tag">Performance Mgmt</span>
+          <span class="tag">Talent Strategy</span>
         </div>
       </div>
     </div>
@@ -646,205 +726,188 @@ footer {
 </section>
 
 <!-- SERVICES -->
-<section id="services">
-  <div class="section-eyebrow">What we do</div>
-  <h2 class="section-h2">Our services</h2>
-  <p class="section-lead">Two integrated pillars, nine practice areas — designed to work alone or together depending on what your organization needs most.</p>
-
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <span class="section-eyebrow">What We Do</span>
+      <h2 class="section-title">Our services</h2>
+      <p class="section-sub">Two integrated pillars, nine practice areas — designed to work alone or together depending on what your organisation needs most.</p>
+    </div>
+  </div>
   <div class="services-grid">
-    <div class="service-item">
-      <div class="service-num">01</div>
-      <div class="service-title">Leadership Development</div>
-      <div class="service-body">Building leaders who communicate with clarity, think strategically, and inspire teams to perform at their highest potential.</div>
-      <div class="service-tags"><span class="tag">People Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <h3>Leadership Development</h3>
+      <p>Building leaders who communicate with clarity, think strategically, and inspire teams to perform at their highest potential.</p>
+      <span class="service-badge badge-people">People Pillar</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">02</div>
-      <div class="service-title">Selling Skills Training</div>
-      <div class="service-body">Equipping sales teams with techniques, mindsets, and practice to convert more, retain better, and negotiate with confidence.</div>
-      <div class="service-tags"><span class="tag">People Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <h3>Selling Skills Training</h3>
+      <p>Equipping sales teams with techniques, mindsets, and practice to convert more, retain better, and negotiate with confidence.</p>
+      <span class="service-badge badge-people">People Pillar</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">03</div>
-      <div class="service-title">Emotional Intelligence & Soft Skills</div>
-      <div class="service-body">Developing the interpersonal capabilities — empathy, communication, resilience — that drive collaboration and workplace harmony.</div>
-      <div class="service-tags"><span class="tag">People Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <h3>Emotional Intelligence & Soft Skills</h3>
+      <p>Developing interpersonal capabilities — empathy, communication, resilience — that drive collaboration and workplace harmony.</p>
+      <span class="service-badge badge-people">People Pillar</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">04</div>
-      <div class="service-title">Change Management</div>
-      <div class="service-body">Helping leaders and teams navigate transformation — from restructuring to digital change — with minimal disruption and maximum adoption.</div>
-      <div class="service-tags"><span class="tag">People Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <h3>Change Management</h3>
+      <p>Helping leaders and teams navigate transformation — from restructuring to digital change — with minimum disruption and maximum adoption.</p>
+      <span class="service-badge badge-people">People Pillar</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">05</div>
-      <div class="service-title">Process Engineering</div>
-      <div class="service-body">Redesigning workflows, eliminating bottlenecks, and building efficient operating systems that scale with your growth.</div>
-      <div class="service-tags"><span class="tag">Business Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <h3>Culture Transformation</h3>
+      <p>Shifting the values, behaviours, and norms that define your organisation — from the inside out, with lasting measurable impact.</p>
+      <span class="service-badge badge-people">People Pillar</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">06</div>
-      <div class="service-title">HR Interventions & Policy Design</div>
-      <div class="service-body">Building robust HR frameworks — from policy handbooks to grievance systems — that create fair, compliant, and motivating workplaces.</div>
-      <div class="service-tags"><span class="tag">Business Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <h3>Process Engineering</h3>
+      <p>Redesigning workflows, eliminating bottlenecks, and building efficient operating systems that scale with your growth.</p>
+      <span class="service-badge badge-business">Business Solutions</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">07</div>
-      <div class="service-title">Performance Management Systems</div>
-      <div class="service-body">Designing goal-setting, appraisal, and feedback structures that align individual performance with organizational ambition.</div>
-      <div class="service-tags"><span class="tag">Business Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">07</span>
+      <h3>HR Policy & Framework Design</h3>
+      <p>Building robust HR frameworks — from policy handbooks to grievance systems — that create fair, compliant, and motivating workplaces.</p>
+      <span class="service-badge badge-business">Business Solutions</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">08</div>
-      <div class="service-title">Talent Strategy & Consulting</div>
-      <div class="service-body">From workforce planning to succession design — building a talent engine that attracts, develops, and retains the people your business needs.</div>
-      <div class="service-tags"><span class="tag">Business Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">08</span>
+      <h3>Performance Management Systems</h3>
+      <p>Designing goal-setting, appraisal, and feedback structures that align individual performance with organisational ambition.</p>
+      <span class="service-badge badge-business">Business Solutions</span>
     </div>
-    <div class="service-item">
-      <div class="service-num">09</div>
-      <div class="service-title">Culture Transformation</div>
-      <div class="service-body">Shifting the values, behaviours, and norms that define your organization — from the inside out, with lasting measurable impact.</div>
-      <div class="service-tags"><span class="tag">Business Pillar</span></div>
+    <div class="service-card">
+      <span class="service-num">09</span>
+      <h3>Talent Strategy & Consulting</h3>
+      <p>From workforce planning to succession design — building a talent engine that attracts, develops, and retains the people your business needs.</p>
+      <span class="service-badge badge-business">Business Solutions</span>
     </div>
   </div>
 </section>
 
 <!-- APPROACH -->
 <section class="approach" id="approach">
-  <div class="section-eyebrow">How we work</div>
-  <h2 class="section-h2" style="color:white;">Our approach</h2>
-  <p class="section-lead">We follow a four-stage engagement model that ensures outcomes — not just activity.</p>
+  <span class="section-eyebrow">How We Work</span>
+  <h2 class="section-title">Our 4-step approach</h2>
+  <p class="section-sub">A four-stage engagement model that ensures outcomes — not just activity.</p>
   <div class="approach-steps">
-    <div class="approach-step">
-      <div class="step-circle">1</div>
-      <div class="step-title">Diagnose &amp; Analyse</div>
-      <div class="step-body">We invest time deeply understanding your real challenges — people, process, and culture — mapping root causes before recommending anything.</div>
+    <div class="step">
+      <span class="step-num">01</span>
+      <h3>Diagnose & Analyse</h3>
+      <p>We invest time deeply understanding your real challenges — people, process, and culture — mapping root causes before recommending anything.</p>
+      <div class="step-line"></div>
     </div>
-    <div class="approach-step">
-      <div class="step-circle">2</div>
-      <div class="step-title">Design</div>
-      <div class="step-body">We build a solution unique to your organization — no templates, no off-the-shelf programs. Every intervention is purpose-built for your context.</div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <h3>Design</h3>
+      <p>We build a solution unique to your organisation — no templates, no off-the-shelf programs. Every intervention is purpose-built for your context.</p>
+      <div class="step-line"></div>
     </div>
-    <div class="approach-step">
-      <div class="step-circle">3</div>
-      <div class="step-title">Develop</div>
-      <div class="step-body">We create the content, frameworks, systems, and tools needed — bringing the right experts at every stage of the build.</div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <h3>Develop</h3>
+      <p>We create the content, frameworks, systems, and tools needed — bringing the right experts at every stage of the build.</p>
+      <div class="step-line"></div>
     </div>
-    <div class="approach-step">
-      <div class="step-circle">4</div>
-      <div class="step-title">Implement &amp; Evaluate</div>
-      <div class="step-body">We execute on the ground and measure what changes — adjusting until results are real, embedded, and lasting.</div>
-    </div>
-  </div>
-</section>
-
-<!-- VISION & MISSION -->
-<section id="vision-mission">
-  <div class="section-eyebrow">Who we are</div>
-  <h2 class="section-h2">Vision & Mission</h2>
-  <div class="vm-grid">
-    <div class="vm-card vision">
-      <div class="vm-label">Our Vision</div>
-      <div class="vm-text">To make every organization we touch — stronger in its people, sharper in its systems, and bolder in its ambitions.</div>
-      <div class="vm-body">We exist to raise what organizations believe is possible — by transforming both the people within them and the systems that surround them.</div>
-      <div class="vm-deco"></div>
-    </div>
-    <div class="vm-card mission">
-      <div class="vm-label">Our Mission</div>
-      <div class="vm-text">We help organizations perform at their best — by developing their people and redesigning the systems those people work within.</div>
-      <div class="vm-body">One integrated partner. Two powerful pillars. Outcomes that are real, measurable, and lasting.</div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <h3>Implement & Evaluate</h3>
+      <p>We execute on the ground and measure what changes — adjusting until results are real, embedded, and lasting.</p>
     </div>
   </div>
 </section>
 
 <!-- VALUES -->
-<section class="values">
-  <div class="section-eyebrow">What we stand for</div>
-  <h2 class="section-h2">Our core values</h2>
+<section class="values" id="values">
+  <span class="section-eyebrow">What We Stand For</span>
+  <h2 class="section-title">Our core values</h2>
   <div class="values-grid">
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Discipline</div>
-      <div class="value-body">We operate with structure and consistency. When we commit, it gets done — on time, to standard, without chaos.</div>
+      <div class="value-icon">🎯</div>
+      <h3>Discipline</h3>
+      <p>We operate with structure and consistency. When we commit to something, it gets done — on time, to standard, without chaos.</p>
     </div>
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Integrity</div>
-      <div class="value-body">We give honest counsel even when it's uncomfortable. Clients trust us because we never tell them only what they want to hear.</div>
+      <div class="value-icon">🤝</div>
+      <h3>Integrity</h3>
+      <p>We give honest counsel even when it's uncomfortable. Clients trust us because we never tell them only what they want to hear.</p>
     </div>
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Respect for all</div>
-      <div class="value-body">The CEO and the frontline worker matter equally to us. Every voice in every room we enter is heard and valued.</div>
+      <div class="value-icon">🌐</div>
+      <h3>Respect for All</h3>
+      <p>The CEO and the frontline worker are equally important to us. Every voice in every room we enter is heard and valued.</p>
     </div>
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Excellence</div>
-      <div class="value-body">We raise the standard every time. Good delivery is the baseline — memorable impact is the goal.</div>
+      <div class="value-icon">⭐</div>
+      <h3>Excellence</h3>
+      <p>We raise the standard every time. Good delivery is the baseline — memorable impact is the goal.</p>
     </div>
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Caring</div>
-      <div class="value-body">We take personal ownership of client outcomes. Your challenge becomes our challenge — and we stay until it's solved.</div>
+      <div class="value-icon">❤️</div>
+      <h3>Caring</h3>
+      <p>We take personal ownership of client outcomes. Your challenge becomes our challenge — and we stay until it's solved.</p>
     </div>
     <div class="value-card">
-      <div class="value-dot"></div>
-      <div class="value-title">Teamwork</div>
-      <div class="value-body">The best outcomes are co-created. We work as one integrated team — with each other, our expert network, and our clients.</div>
+      <div class="value-icon">🔗</div>
+      <h3>Teamwork</h3>
+      <p>The best outcomes are co-created. We work as one integrated team — with each other, our expert network, and our clients.</p>
     </div>
   </div>
 </section>
 
 <!-- CULTURE CODE -->
-<section>
-  <div class="culture-inner">
-    <div>
-      <div class="section-eyebrow">Culture code</div>
-      <h2 class="section-h2">How we<br><em>show up</em></h2>
-      <p class="section-lead">Six principles that define the Ybiance way — for our team, our experts, and every client we work with.</p>
+<section class="culture" id="culture">
+  <span class="section-eyebrow">Culture Code</span>
+  <h2 class="section-title">How we <em>show up</em></h2>
+  <p class="section-sub">Six principles that define the Ybiance way — for our team, our experts, and every client we work with.</p>
+  <div class="culture-grid">
+    <div class="culture-card">
+      <span class="culture-num">01</span>
+      <div>
+        <h3>We solve the whole problem</h3>
+        <p>Skill gaps and broken processes often share the same root cause. We look at people, systems, and culture together — never in isolation.</p>
+      </div>
     </div>
-    <div class="culture-list">
-      <div class="culture-item">
-        <div class="culture-num">01</div>
-        <div>
-          <div class="culture-title">We solve the whole problem</div>
-          <div class="culture-body">Skill gaps and broken processes often share the same root. We look at people, systems, and culture together — never in isolation.</div>
-        </div>
+    <div class="culture-card">
+      <span class="culture-num">02</span>
+      <div>
+        <h3>We stay until it works</h3>
+        <p>We don't exit at delivery. We stay close, measure what's changing, and adjust until the outcome is embedded in the organisation.</p>
       </div>
-      <div class="culture-item">
-        <div class="culture-num">02</div>
-        <div>
-          <div class="culture-title">We stay until it works</div>
-          <div class="culture-body">We don't exit at delivery. We measure, adjust, and stay until the change is embedded in the organization.</div>
-        </div>
+    </div>
+    <div class="culture-card">
+      <span class="culture-num">03</span>
+      <div>
+        <h3>We bring the right expert</h3>
+        <p>IIM faculty, industry veterans, international trainers — we match the right person to each challenge, not the most available one.</p>
       </div>
-      <div class="culture-item">
-        <div class="culture-num">03</div>
-        <div>
-          <div class="culture-title">We bring the right expert</div>
-          <div class="culture-body">IIM faculty, industry veterans, international trainers — matched to each challenge, not just whoever is available.</div>
-        </div>
+    </div>
+    <div class="culture-card">
+      <span class="culture-num">04</span>
+      <div>
+        <h3>We treat every client as unique</h3>
+        <p>No two clients get the same solution. We design everything around your context — your sector, your culture, your ambition.</p>
       </div>
-      <div class="culture-item">
-        <div class="culture-num">04</div>
-        <div>
-          <div class="culture-title">We treat every client as unique</div>
-          <div class="culture-body">No two clients get the same solution. We design around your sector, your culture, and your ambition.</div>
-        </div>
+    </div>
+    <div class="culture-card">
+      <span class="culture-num">05</span>
+      <div>
+        <h3>We adapt without lowering the bar</h3>
+        <p>Whether in-person or online, MSME or large enterprise — our approach flexes. Our standards don't.</p>
       </div>
-      <div class="culture-item">
-        <div class="culture-num">05</div>
-        <div>
-          <div class="culture-title">We adapt without lowering the bar</div>
-          <div class="culture-body">Online or in-person, MSME or enterprise — our approach flexes. Our standards don't.</div>
-        </div>
-      </div>
-      <div class="culture-item">
-        <div class="culture-num">06</div>
-        <div>
-          <div class="culture-title">We measure what matters</div>
-          <div class="culture-body">Retention, productivity, process efficiency — the numbers that show up in your business, not just in our reports.</div>
-        </div>
+    </div>
+    <div class="culture-card">
+      <span class="culture-num">06</span>
+      <div>
+        <h3>We measure what matters</h3>
+        <p>Retention, productivity, process efficiency, culture scores — the numbers that show up in your business, not just in our reports.</p>
       </div>
     </div>
   </div>
@@ -852,232 +915,203 @@ footer {
 
 <!-- CLIENTS -->
 <section class="clients" id="clients">
-  <div class="section-eyebrow" style="justify-content:center;">Trusted by</div>
-  <h2 class="section-h2">Organizations that chose<br><em>to grow with us</em></h2>
-  <p class="section-lead" style="margin:0 auto;">200+ clients served across 14 states and 4 countries — banking, insurance, FMCG, education, aviation, infrastructure, and more.</p>
-  <div class="clients-logo-row">
-    <span class="client-pill">LIC of India</span>
-    <span class="client-pill">State Bank of India</span>
-    <span class="client-pill">Airport Authority of India</span>
-    <span class="client-pill">PHed Rajasthan</span>
-    <span class="client-pill">Canara HSBC</span>
-    <span class="client-pill">Andhra Bank</span>
-    <span class="client-pill">AU Bank</span>
-    <span class="client-pill">Kotak Life</span>
-    <span class="client-pill">UNICEF India</span>
-    <span class="client-pill">Rajasthan Education Dept.</span>
-    <span class="client-pill">Bharti Infratel</span>
-    <span class="client-pill">IIM Bodh Gaya</span>
-    <span class="client-pill">Manipal University</span>
-    <span class="client-pill">Amity University</span>
+  <span class="section-eyebrow">Trusted By</span>
+  <h2 class="section-title">Organisations that chose<br><em style="color:var(--cyan);">to grow with us</em></h2>
+  <p class="section-sub">200+ clients served across 14 states and 4 countries.</p>
+
+  <div class="clients-marquee-wrap">
+    <div class="clients-marquee">
+      <span class="client-item">LIC of India</span>
+      <span class="client-item">State Bank of India</span>
+      <span class="client-item">Airport Authority of India</span>
+      <span class="client-item">PHed Rajasthan</span>
+      <span class="client-item">Canara HSBC</span>
+      <span class="client-item">Andhra Bank</span>
+      <span class="client-item">AU Bank</span>
+      <span class="client-item">Kotak Life</span>
+      <span class="client-item">UNICEF India</span>
+      <span class="client-item">Rajasthan Education Dept.</span>
+      <span class="client-item">Bharti Infratel</span>
+      <span class="client-item">IIM Bodh Gaya</span>
+      <span class="client-item">Manipal University</span>
+      <span class="client-item">Amity University</span>
+      <!-- duplicate for seamless loop -->
+      <span class="client-item">LIC of India</span>
+      <span class="client-item">State Bank of India</span>
+      <span class="client-item">Airport Authority of India</span>
+      <span class="client-item">PHed Rajasthan</span>
+      <span class="client-item">Canara HSBC</span>
+      <span class="client-item">Andhra Bank</span>
+      <span class="client-item">AU Bank</span>
+      <span class="client-item">Kotak Life</span>
+      <span class="client-item">UNICEF India</span>
+      <span class="client-item">Rajasthan Education Dept.</span>
+      <span class="client-item">Bharti Infratel</span>
+      <span class="client-item">IIM Bodh Gaya</span>
+      <span class="client-item">Manipal University</span>
+      <span class="client-item">Amity University</span>
+    </div>
+  </div>
+
+  <div class="clients-sectors">
+    <span class="sector-tag">Banking</span>
+    <span class="sector-tag">Insurance</span>
+    <span class="sector-tag">Infrastructure</span>
+    <span class="sector-tag">Education</span>
+    <span class="sector-tag">FMCG</span>
+    <span class="sector-tag">Aviation</span>
+    <span class="sector-tag">MSMEs & Startups</span>
+    <span class="sector-tag">Government</span>
   </div>
 </section>
 
-<!-- CTA STRIP -->
-<section class="cta-section" style="padding:72px 5vw;">
-  <div class="cta-bg-circle-1"></div>
-  <div class="cta-bg-circle-2"></div>
-  <div class="cta-label">Ready to start?</div>
-  <h2 class="cta-h2">Let's build something<br>that actually lasts.</h2>
-  <p class="cta-body">Tell us your challenge — whether it's a people problem, a process problem, or both. We'll come back with a perspective, not a pitch deck.</p>
+<!-- VISION & MISSION -->
+<section class="vision-mission" id="vision-mission">
+  <span class="section-eyebrow">Our Purpose</span>
+  <h2 class="section-title">Vision & Mission</h2>
+  <div class="vm-grid">
+    <div class="vm-card vision">
+      <span class="vm-label">Vision — where we are going</span>
+      <p class="vm-quote">To make every organisation we touch — stronger in its people, sharper in its systems, and bolder in its ambitions.</p>
+      <p class="vm-body">We exist to raise what organisations believe is possible for themselves — by transforming the people within them and the systems that surround them.</p>
+    </div>
+    <div class="vm-card mission">
+      <span class="vm-label">Mission — what we do every day</span>
+      <p class="vm-quote">We help organisations perform at their best — by developing their people and redesigning the systems those people work within.</p>
+      <p class="vm-body">We don't hand over a report and leave. We work alongside our clients until results are real — in the numbers, the culture, and the daily experience of every person in the organisation.</p>
+    </div>
+  </div>
 </section>
 
-<!-- CONTACT FORM -->
-<section class="contact-section" id="contact">
+<!-- CONTACT -->
+<section class="contact" id="contact">
   <div class="contact-inner">
-    <div class="contact-info">
-      <div class="section-eyebrow">Get in touch</div>
-      <h2 class="section-h2">Talk to us.<br>We listen <em>first.</em></h2>
-      <p class="section-lead" style="margin-bottom:40px;">Share your challenge and we'll come back with a perspective — not a sales pitch.</p>
-      <div class="contact-detail">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+    <div>
+      <span class="section-eyebrow">Ready to Start?</span>
+      <h2 class="section-title">Let's build something<br>that actually lasts.</h2>
+      <p class="section-sub">Tell us your challenge — whether it's a people problem, a process problem, or both. We'll come back with a perspective, not a pitch deck.</p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Phone</span>
+            <span class="contact-detail-val">+91 99295 54055</span>
+          </div>
         </div>
-        <div>
-          <div class="contact-detail-label">Phone</div>
-          <div class="contact-detail-value">+91 99295 54055</div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Email</span>
+            <span class="contact-detail-val">hello@ybiance.com</span>
+          </div>
         </div>
-      </div>
-      <div class="contact-detail">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </div>
-        <div>
-          <div class="contact-detail-label">Email</div>
-          <div class="contact-detail-value">hello@ybiance.com</div>
-        </div>
-      </div>
-      <div class="contact-detail">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div>
-          <div class="contact-detail-label">Location</div>
-          <div class="contact-detail-value">Jaipur, Rajasthan, India</div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div class="contact-detail-text">
+            <span class="contact-detail-label">Location</span>
+            <span class="contact-detail-val">Jaipur, Rajasthan, India</span>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="contact-form" id="contactFormWrapper">
-      <div id="formContent">
-        <h3 style="font-family:var(--serif);font-size:22px;margin-bottom:24px;color:var(--ink);">Send us a message</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Your name *</label>
-            <input type="text" class="form-input" placeholder="Rajesh Kumar" id="f-name">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Organisation *</label>
-            <input type="text" class="form-input" placeholder="Company name" id="f-org">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Email *</label>
-            <input type="email" class="form-input" placeholder="you@company.com" id="f-email">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" class="form-input" placeholder="+91 98765 43210" id="f-phone">
-          </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your name</label>
+          <input type="text" placeholder="Full name">
         </div>
         <div class="form-group">
-          <label class="form-label">What are you looking for?</label>
-          <select class="form-select" id="f-service">
-            <option value="">Select a service area</option>
-            <optgroup label="People Pillar">
-              <option>Leadership Development</option>
-              <option>Selling Skills Training</option>
-              <option>Soft Skills &amp; Emotional Intelligence</option>
-              <option>Change Management</option>
-              <option>Culture Transformation</option>
-            </optgroup>
-            <optgroup label="Business Solutions">
-              <option>Process Engineering</option>
-              <option>HR Policy &amp; Framework Design</option>
-              <option>Performance Management Systems</option>
-              <option>Talent Strategy &amp; Consulting</option>
-            </optgroup>
-            <option>Not sure — need a consultation</option>
-          </select>
+          <label>Organisation</label>
+          <input type="text" placeholder="Company name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="you@company.com">
         </div>
         <div class="form-group">
-          <label class="form-label">Tell us about your challenge</label>
-          <textarea class="form-textarea" placeholder="Describe what you're facing — team size, sector, goals. The more context, the better our response." id="f-message"></textarea>
+          <label>Phone</label>
+          <input type="tel" placeholder="+91 00000 00000">
         </div>
-        <button class="form-submit" onclick="submitForm()">Send message →</button>
       </div>
-      <div class="form-success" id="formSuccess">
-        <div class="form-success-icon">✅</div>
-        <div class="form-success-title">Message received!</div>
-        <div class="form-success-body">Thank you for reaching out. The Ybiance team will get back to you within one business day with a thoughtful response — not a template.</div>
+      <div class="form-group">
+        <label>What are you looking for?</label>
+        <select>
+          <option value="">Select a service area</option>
+          <optgroup label="People Pillar">
+            <option>Leadership Development</option>
+            <option>Selling Skills Training</option>
+            <option>Soft Skills & Emotional Intelligence</option>
+            <option>Change Management</option>
+            <option>Culture Transformation</option>
+          </optgroup>
+          <optgroup label="Business Solutions">
+            <option>Process Engineering</option>
+            <option>HR Policy & Framework Design</option>
+            <option>Performance Management Systems</option>
+            <option>Talent Strategy & Consulting</option>
+          </optgroup>
+          <option>Not sure — need a consultation</option>
+        </select>
       </div>
+      <div class="form-group">
+        <label>Tell us about your challenge</label>
+        <textarea placeholder="Describe what you're facing…"></textarea>
+      </div>
+      <button class="form-submit">Send message →</button>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-top">
-    <div>
-      <div class="footer-brand-name">Ybiance</div>
-      <div class="footer-tagline">Grow your people.<br>Strengthen your business.</div>
-      <div style="font-size:13px;">Jaipur, Rajasthan, India</div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="text-decoration:none;">
+        <div class="nav-logo-shield">
+          <span class="nav-logo-y">Y</span>
+          <div class="nav-logo-arrow"></div>
+        </div>
+        <span class="nav-logo-text">Y<span>b</span>iance</span>
+      </a>
+      <p>Grow your people. Strengthen your business.<br>Jaipur, Rajasthan, India · Since 2014</p>
     </div>
-    <div>
-      <div class="footer-col-title">Services</div>
-      <ul class="footer-links">
+    <div class="footer-col">
+      <h4>People Pillar</h4>
+      <ul>
         <li><a href="#">Leadership Development</a></li>
         <li><a href="#">Selling Skills</a></li>
-        <li><a href="#">Soft Skills &amp; EQ</a></li>
+        <li><a href="#">Soft Skills & EQ</a></li>
         <li><a href="#">Change Management</a></li>
         <li><a href="#">Culture Transformation</a></li>
       </ul>
     </div>
-    <div>
-      <div class="footer-col-title">Business Solutions</div>
-      <ul class="footer-links">
+    <div class="footer-col">
+      <h4>Business Solutions</h4>
+      <ul>
         <li><a href="#">Process Engineering</a></li>
         <li><a href="#">HR Policy Design</a></li>
         <li><a href="#">Performance Systems</a></li>
         <li><a href="#">Talent Strategy</a></li>
       </ul>
     </div>
-    <div>
-      <div class="footer-col-title">Company</div>
-      <ul class="footer-links">
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
         <li><a href="#about">About Us</a></li>
         <li><a href="#approach">Our Approach</a></li>
-        <li><a href="#vision-mission">Vision &amp; Mission</a></li>
+        <li><a href="#vision-mission">Vision & Mission</a></li>
         <li><a href="#clients">Clients</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2026 Ybiance. All rights reserved.</div>
-    <div class="footer-location">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      Jaipur, Rajasthan, India
-    </div>
+    <p>© 2026 Ybiance. All rights reserved.</p>
+    <span class="footer-tagline">People-first. Performance-driven.</span>
   </div>
 </footer>
-
-<script>
-// Scroll animations
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = "1";
-      e.target.style.transform = "translateY(0)";
-    }
-  });
-}, { threshold: 0.08 });
-
-document.querySelectorAll(".service-item, .value-card, .purpose-card, .culture-item, .vm-card, .stat-card, .contact-detail, .contact-form").forEach(el => {
-  el.style.opacity = "0";
-  el.style.transform = "translateY(16px)";
-  el.style.transition = "opacity 0.55s ease, transform 0.55s ease";
-  observer.observe(el);
-});
-
-// Mobile menu
-const hamburger = document.getElementById("hamburger");
-const mobileMenu = document.getElementById("mobileMenu");
-hamburger.addEventListener("click", () => {
-  hamburger.classList.toggle("open");
-  mobileMenu.classList.toggle("open");
-  document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
-});
-function closeMobile() {
-  hamburger.classList.remove("open");
-  mobileMenu.classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-// Contact form
-function submitForm() {
-  const name = document.getElementById("f-name").value.trim();
-  const email = document.getElementById("f-email").value.trim();
-  const org = document.getElementById("f-org").value.trim();
-  if (!name || !email || !org) {
-    alert("Please fill in your name, organisation, and email to continue.");
-    return;
-  }
-  document.getElementById("formContent").style.display = "none";
-  document.getElementById("formSuccess").style.display = "block";
-}
-
-// Nav scroll effect
-window.addEventListener("scroll", () => {
-  const nav = document.querySelector("nav");
-  if (window.scrollY > 20) {
-    nav.style.boxShadow = "0 2px 20px rgba(0,0,0,0.08)";
-  } else {
-    nav.style.boxShadow = "none";
-  }
-});
-</script>
 
 </body>
 </html>
